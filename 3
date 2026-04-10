@@ -1,0 +1,59 @@
+
+
+fn transpose(matrix: [[i32; 3]; 3]) -> [[i32; 3]; 3] {
+    let mut result = [[0; 3]; 3];  // Создаем пустую матрицу 3x3
+    
+    for i in 0..3 {  // Проходим по строкам
+        for j in 0..3 {  // Проходим по столбцам
+            result[j][i] = matrix[i][j];  // Меняем местами индексы
+        }
+    }
+    
+    result  // Возвращаем результат
+}
+
+#[test]
+fn test_transpose() {
+    let matrix = [
+        [101, 102, 103], 
+        [201, 202, 203],
+        [301, 302, 303],
+    ];
+    let transposed = transpose(matrix);
+    assert_eq!(
+        transposed,
+        [
+            [101, 201, 301], 
+            [102, 202, 302],
+            [103, 203, 303],
+        ]
+    );
+}
+
+fn main() {
+    let matrix = [
+        [101, 102, 103], 
+        [201, 202, 203],
+        [301, 302, 303],
+    ];
+
+    print_matrix("Исходная матрица:", &matrix);
+    println!();
+    let transposed = transpose(matrix);
+    print_matrix("Транспонированная матрица:", &transposed);
+}
+
+fn print_matrix(name: &str, matrix: &[[i32; 3]; 3]) {
+    println!("{}", name);
+    println!("┌─────────────┐");
+    for (i, row) in matrix.iter().enumerate() {
+        print!("│ ");
+        for val in row.iter() {
+            print!("{:3} ", val);
+        }
+        println!("│");
+        if i == matrix.len() - 1 {
+            println!("└─────────────┘");
+        }
+    }
+}
