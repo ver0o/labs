@@ -1,0 +1,28 @@
+fn collatz_length(mut n: i32) -> u32 {
+    let mut length = 1;
+    
+    //если ni = 1, то последовательность завершается числом ni
+    while n != 1 {
+    //если ni четное
+        if n % 2 == 0 {
+        //то n[i+1] = ni / 2
+            n = n / 2;
+        //иначе n[i+1] = 3*ni+1
+        } else {
+            n = 3 * n + 1;
+        }
+        length += 1;
+    }
+    
+    length
+}
+
+#[test]
+fn test_collatz_length() {
+//сравниваем что результат выполнения функции collatz_length с параметром 11 эквивалентен 15
+    assert_eq!(collatz_length(11), 15);
+}
+
+fn main() {
+    println!("Длина для 11: {}", collatz_length(11));
+}
