@@ -1,0 +1,40 @@
+pub trait Logger {
+    /// логирует сообщение указанного уровня.
+    fn log(&self, verbosity: u8, message: &str);
+}
+
+struct StderrLogger;
+
+impl Logger for StderrLogger {
+    fn log(&self, verbosity: u8, message: &str) {
+        eprintln!("verbosity={verbosity}: {message}");
+    }
+}
+
+/// Логировать сообщения только заданного уровняl.
+struct VerbosityFilter {
+    max_verbosity: u8,
+    inner: StderrLogger,
+}
+
+// --- РЕШЕНИЕ ---
+impl Logger for VerbosityFilter {
+    fn log(&self, verbosity: u8, message: &str) {
+        if verbosity <= self.max_verbosity {
+            self.inner.log(verbosity, message);
+        }
+    }
+}
+// ----------------
+
+fn main() {
+    let logger = VerbosityFilter { max_verbosity: 3, inner: StderrLogger };
+    
+    println!("Запускаем логгер с max_verbosity=3:");
+    
+    // Это сообщение имеет уровень 5. 5 > 3, поэтому оно будет отфильтровано (не выведется).
+    logger.log(5, "Какое то");
+    
+    // Это сообщение имеет уровень 2. 2 <= 3, поэтому оно выведется.
+    logger.log(2, "Сообщение");
+}
